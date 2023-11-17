@@ -1,0 +1,22 @@
+Lab 3 - Uppgiften G nivå:
+
+View att spela Tic Tac Toe
+
+Kod enligt MVC designmönster
+
+Människa mot dator
+
+Poängruta - ScoreBoard
+
+När en runda är slut visa vem som vann elr oavgjort innan nästa runda fortsätter
+
+Vid flera rundor utan nollställa spel ska poäng visas
+
+Datorns nästa drag implementeras olika;
+Slumpmässigt? (random) eller
+Optimalt drag?
+
+Koden ska ha Tester för;
+Giltiga drag och
+Om rundan är färdigspelad
+
