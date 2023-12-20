@@ -2,6 +2,8 @@ package se.iths.thailambo.tictactoethai;
 
 import javafx.beans.property.*;
 
+import java.util.Objects;
+
 public class Model {
     StringProperty cell1 = new SimpleStringProperty("");
     StringProperty cell2 = new SimpleStringProperty("");
@@ -15,6 +17,7 @@ public class Model {
 
     IntegerProperty playerScore = new SimpleIntegerProperty(0);
     IntegerProperty computerScore = new SimpleIntegerProperty(0);
+//    Paus KL 01:43
 
     public int getPlayerScore () {
         return playerScore.get();
@@ -64,9 +67,20 @@ public class Model {
     static final String COMPUTER = "O";
 
 
+    static final int[][] possibleWins = {
+            {1,2,3},
+            {4,5,6},
+            {7,8,9},
+            {1,4,7}, //Kolumner
+            {2,5,8}, //Kolumner
+            {3,6,9}, //Kolumner
+            {1,5,9}, //Diagonal 1
+            {3,5,7} //Diagonal 2
+    };
 
     public void cellClicked (int id) {
         if (gameOver)
+            return;
             prepareNextRound();
 
         if (!cellValue(id).isEmpty())
@@ -130,39 +144,32 @@ public class Model {
             default -> "";
         };
     }
-
-    private void checkForGameOver(){
-        for (var ids : possibleWins) {
-            if (!cellValue(ids[0]).isEmpty()
-                    && cellValue(ids[0]).equals(cellValue(ids[1]))
-                    && cellValue(ids[1]).equals(cellValue(ids[2]))) {
-                gameOver = true;
-
-                return;
-            }
-        }
+//För att kunna skriva tester behöver checkForGameOver vara public
+    public void checkForGameOver(){
         gameOver = true;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 10; i++) {
             if (cellValue(i).isEmpty()) {
                 gameOver = false;
                 break;
             }
         }
+
+        //  Check for 3 in a row
+        for (var ids : possibleWins) {
+            if (!cellValue(ids[0]).isEmpty()
+                    && cellValue(ids[0]).equals(cellValue(ids[1]))
+                    && cellValue(ids[1]).equals(cellValue(ids[2]))) {
+                gameOver = true;
+                return;
+            }
+        }
     }
-//  Check for 3 in a row
 
 
 
-    static final int[][] possibleWins = {
-            {1,2,3},
-            {4,5,6},
-            {7,8,9},
-            {1,4,7},
-            {2,5,8},
-            {3,6,9},
-            {1,5,9},
-            {3,5,7}
-    };
+
+
+
 
     //ToDo: CheckForGameOver
     //ToDo: changeCurren
