@@ -1,8 +1,6 @@
 package se.iths.thailambo.tictactoethai;
 
 import javafx.beans.property.*;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 
 public class Model {
     StringProperty cell1 = new SimpleStringProperty("");
@@ -71,31 +69,51 @@ public class Model {
         if (gameOver)
             prepareNextRound();
 
-
-            return;
         if (!cellValue(id).isEmpty())
             return;
 
         switch (id) {
-            case 1 -> setCell1("currentPlayer");
-            case 2 -> setCell2("currentPlayer");
-            case 3 -> setCell3("currentPlayer");
-            case 4 -> setCell4("currentPlayer");
-            case 5 -> setCell5("currentPlayer");
-            case 6 -> setCell6("currentPlayer");
-            case 7 -> setCell7("currentPlayer");
-            case 8 -> setCell8("currentPlayer");
-            case 9 -> setCell9("currentPlayer");
+            case 1 -> setCell1(currentPlayer);
+            case 2 -> setCell2(currentPlayer);
+            case 3 -> setCell3(currentPlayer);
+            case 4 -> setCell4(currentPlayer);
+            case 5 -> setCell5(currentPlayer);
+            case 6 -> setCell6(currentPlayer);
+            case 7 -> setCell7(currentPlayer);
+            case 8 -> setCell8(currentPlayer);
+            case 9 -> setCell9(currentPlayer);
         }
-        checkForGameOver();
         changeCurrentPlayer();
 
+
+        checkForGameOver();
+        whatDoesThisOneDo();
+
+
+    }
+//KL 01:09 Paus
+    private void changeCurrentPlayer () {
+        if (currentPlayer.equals(PLAYER))
+            currentPlayer = COMPUTER;
+        else
+            currentPlayer = PLAYER;
     }
 
     private void prepareNextRound () {
+        setCell1("");
+        setCell2("");
+        setCell3("");
+        setCell4("");
+        setCell5("");
+        setCell6("");
+        setCell7("");
+        setCell8("");
+        setCell9("");
+        gameOver = false;
     }
 
-    private void changeCurrentPlayer(){
+    private void whatDoesThisOneDo (){
+        changeCurrentPlayer();
     }
 
     private String cellValue (int id) {
@@ -114,28 +132,26 @@ public class Model {
     }
 
     private void checkForGameOver(){
+        for (var ids : possibleWins) {
+            if (!cellValue(ids[0]).isEmpty()
+                    && cellValue(ids[0]).equals(cellValue(ids[1]))
+                    && cellValue(ids[1]).equals(cellValue(ids[2]))) {
+                gameOver = true;
+
+                return;
+            }
+        }
+        gameOver = true;
         for (int i = 0; i < 10; i++) {
             if (cellValue(i).isEmpty()) {
                 gameOver = false;
                 break;
             }
         }
-        if (cellValue(1) == cellValue(2) && cellValue(2) == cellValue(3))
-        gameOver = true;
-        else if (cellValue(4) == cellValue(5)) {
-
-        }
     }
 //  Check for 3 in a row
 
-    for (var ids : possibleWins) {
-        if (!cellValue(ids[0]).isEmpty()
-                && cellValue([0]).equals(cellValue(ids[1]))
-                && cellValue([1]).equals(cellValue(ids[2])) {
-            gameOver = true;
-            return;
-        }
-    }
+
 
     static final int[][] possibleWins = {
             {1,2,3},
@@ -148,6 +164,9 @@ public class Model {
             {3,5,7}
     };
 
+    //ToDo: CheckForGameOver
+    //ToDo: changeCurren
+    //ToDo: Make computer move if not game over
 
 
 
@@ -155,243 +174,7 @@ public class Model {
 
 
 
-//    public int board[];
-//    private final int player = 1;
-//    private final int computer = -1;
-//    private final int empty = 0;
-//    private int currentPlayer = player;
-//
-//    public int turns = 0;
 
-
-    public Model () {
-
-
-        //    private Image imageEmpty;
-//    private Image imagePlayerO;
-//    private Image imagePlayerX;
-//    private ObjectProperty<Image> first;
-//    private ObjectProperty<Image> second;
-//    private ObjectProperty<Image> third;
-//    private ObjectProperty<Image> forth;
-//    private ObjectProperty<Image> fifth;
-//    private ObjectProperty<Image> sixth;
-//    private ObjectProperty<Image> seventh;
-//    private ObjectProperty<Image> eight;
-//    private ObjectProperty<Image> ninth;
-//
-////    private List<ObjectProperty<Image>> images = List.of(first,second,third,forth,fifth,sixth,seventh,eight,ninth);
-//
-//    private StringProperty score = new SimpleStringProperty("0 points");
-//    private int yourScore;
-//    private int drawCount = 0;
-//
-//    public Model () {
-//        // Initialize your images
-//        imageEmpty = new Image(getClass().getResource("images/empty.png").toExternalForm());
-//        imagePlayerX = new Image(getClass().getResource("images/playerO.png").toExternalForm());
-//        imagePlayerO = new Image(getClass().getResource("images/playerX.png").toExternalForm());
-//
-//        first = new SimpleObjectProperty<>(imageEmpty);
-//        second = new SimpleObjectProperty<>(imageEmpty);
-//        third = new SimpleObjectProperty<>(imageEmpty);
-//        forth = new SimpleObjectProperty<>(imageEmpty);
-//        fifth = new SimpleObjectProperty<>(imageEmpty);
-//        sixth = new SimpleObjectProperty<>(imageEmpty);
-//        seventh = new SimpleObjectProperty<>(imageEmpty);
-//        eight = new SimpleObjectProperty<>(imageEmpty);
-//        ninth = new SimpleObjectProperty<>(imageEmpty);
-//    }
-//        // Initialize the board
-//        Image[][] board = new Image[3][3];
-//        public void makePlayerMove (int row, int col){
-//            if (row == 0 && col == 0 && first.get() == imageEmpty) {
-//                first.set(imagePlayerX);
-//            } else if (row == 0 && col == 1 && second.get() == imageEmpty) {
-//                second.set(imagePlayerX);
-//            } else if (row == 0 && col == 2 && third.get() == imageEmpty) {
-//                third.set(imagePlayerX);
-//            } else if (row == 1 && col == 0 && forth.get() == imageEmpty) {
-//                forth.set(imagePlayerX);
-//            } else if (row == 1 && col == 1 && fifth.get() == imageEmpty) {
-//                fifth.set(imagePlayerX);
-//            } else if (row == 1 && col == 2 && sixth.get() == imageEmpty) {
-//                sixth.set(imagePlayerX);
-//            } else if (row == 2 && col == 0 && seventh.get() == imageEmpty) {
-//                seventh.set(imagePlayerX);
-//            } else if (row == 2 && col == 1 && eight.get() == imageEmpty) {
-//                eight.set(imagePlayerX);
-//            } else if (row == 2 && col == 2 && ninth.get() == imageEmpty) {
-//                ninth.set(imagePlayerX);
-//            }
-//
-//            if (board[row][col].equals(imageEmpty)) {
-//                board[row][col] = imagePlayerX;
-//
-//            }
-//        }
-//        public void makeComputerMove(int row, int col){
-//            if (board[row][col].equals(imageEmpty)) {
-//                board[row][col] = imagePlayerO;
-//            }
-//        }
-//        public boolean checkForWin () {
-//            for (int i = 0; i < 3; i++) {
-//                if (checkRowCol(board[i][0], board[i][1], board[i][2]) || checkRowCol(board[0][i], board[1][i] , board[2][i])) {
-//                    return true;
-//                }
-//            }
-//            return checkRowCol(board[0][0] , board[1][1] , board[2][2]) || checkRowCol(board[0][2] , board[1][1] , board[2][0]);
-//        }
-//        public void resetBoard () {
-//            for (int row = 0; row < 3; row++) {
-//                for (int col = 0; col < 3; col++) {
-//                    board[row][col] = (imageEmpty);
-//                }
-//            }
-//        }
-//
-//        private boolean checkRowCol
-//        (Image cell1 , Image cell2 , Image cell3){
-//            return cell1 != imageEmpty && cell1 == cell2 && cell1 == cell3;
-//        }
-//        public String getScore () {
-//            return score.get();
-//        }
-//
-//        public StringProperty scoreProperty () {
-//            return score;
-//        }
-//
-//        public void setScore (String score){
-//            this.score.set(score);
-//        }
-//        public void setYourScore ( int yourScore){
-//            this.yourScore = yourScore;
-//        }
-//        public void clickAndGetPoints () {
-//            if (checkForWin()) {
-//                if (getScore().equals("It's a draw!")) {
-//                    drawCount++;
-//                    setScore("It's a draw! (Draws: " + drawCount + ")");
-//                } else {
-//                    yourScore++;
-//                }
-//            }
-//            yourScore++;
-//            setScore(yourScore + " points");
-//            resetBoard();
-//        }
-//
-//
-//    public Image getFirst () {
-//        return first.get();
-//    }
-//
-//    public ObjectProperty<Image> firstProperty () {
-//        return first;
-//    }
-//
-//    public void setFirst (Image first) {
-//        this.first.set(first);
-//    }
-//
-//    public Image getSecond () {
-//        return second.get();
-//    }
-//
-//    public ObjectProperty<Image> secondProperty () {
-//        return second;
-//    }
-//
-//    public void setSecond (Image second) {
-//        this.second.set(second);
-//    }
-//
-//    public Image getThird () {
-//        return third.get();
-//    }
-//
-//    public ObjectProperty<Image> thirdProperty () {
-//        return third;
-//    }
-//
-//    public void setThird (Image third) {
-//        this.third.set(third);
-//    }
-//
-//    public Image getForth () {
-//        return forth.get();
-//    }
-//
-//    public ObjectProperty<Image> forthProperty () {
-//        return forth;
-//    }
-//
-//    public void setForth (Image forth) {
-//        this.forth.set(forth);
-//    }
-//
-//    public Image getFifth () {
-//        return fifth.get();
-//    }
-//
-//    public ObjectProperty<Image> fifthProperty () {
-//        return fifth;
-//    }
-//
-//    public void setFifth (Image fifth) {
-//        this.fifth.set(fifth);
-//    }
-//
-//    public Image getSixth () {
-//        return sixth.get();
-//    }
-//
-//    public ObjectProperty<Image> sixthProperty () {
-//        return sixth;
-//    }
-//
-//    public void setSixth (Image sixth) {
-//        this.sixth.set(sixth);
-//    }
-//
-//    public Image getSeventh () {
-//        return seventh.get();
-//    }
-//
-//    public ObjectProperty<Image> seventhProperty () {
-//        return seventh;
-//    }
-//
-//    public void setSeventh (Image seventh) {
-//        this.seventh.set(seventh);
-//    }
-//
-//    public Image getEight () {
-//        return eight.get();
-//    }
-//
-//    public ObjectProperty<Image> eightProperty () {
-//        return eight;
-//    }
-//
-//    public void setEight (Image eight) {
-//        this.eight.set(eight);
-//    }
-//
-//    public Image getNinth () {
-//        return ninth.get();
-//    }
-//
-//    public ObjectProperty<Image> ninthProperty () {
-//        return ninth;
-//    }
-//
-//    public void setNinth (Image ninth) {
-//        this.ninth.set(ninth);
-//    }
-    }
 
     public String getCell1 () {
         return cell1.get();
