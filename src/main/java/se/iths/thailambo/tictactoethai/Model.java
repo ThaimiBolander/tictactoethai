@@ -2,7 +2,9 @@ package se.iths.thailambo.tictactoethai;
 
 import javafx.beans.property.*;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Model {
     StringProperty cell1 = new SimpleStringProperty("");
@@ -17,7 +19,150 @@ public class Model {
 
     IntegerProperty playerScore = new SimpleIntegerProperty(0);
     IntegerProperty computerScore = new SimpleIntegerProperty(0);
-//    Paus KL 01:43
+
+    boolean gameOver = false;
+
+    String currentPlayer = "X";
+    static final String PLAYER = "X";
+    static final String COMPUTER = "O";
+
+    static final int[][] possibleWins = {
+            {1,2,3},
+            {4,5,6},
+            {7,8,9},
+            {1,4,7}, //Kolumner
+            {2,5,8}, //Kolumner
+            {3,6,9}, //Kolumner
+            {1,5,9}, //Diagonal 1
+            {3,5,7} //Diagonal 2
+    };
+
+    public void cellClicked (int id) {
+        if (gameOver) {
+            prepareNextRound();
+            return;
+        }
+        if (!cellValue(id).isEmpty())
+            return;
+        switch (id) {
+            case 1 -> setCell1(currentPlayer);
+            case 2 -> setCell2(currentPlayer);
+            case 3 -> setCell3(currentPlayer);
+            case 4 -> setCell4(currentPlayer);
+            case 5 -> setCell5(currentPlayer);
+            case 6 -> setCell6(currentPlayer);
+            case 7 -> setCell7(currentPlayer);
+            case 8 -> setCell8(currentPlayer);
+            case 9 -> setCell9(currentPlayer);
+        }
+
+        checkForGameOver();
+        if (!gameOver) {
+            changeCurrentPlayer();
+            makeComputerMove();
+        }
+
+//   Todo: Make computer move if not game over
+//   Todo: checkForGameOver();
+//   Todo: changeCurrentPlayer();
+
+    }
+    public void makeComputerMove() {
+        if (!gameOver) {
+            int emptyCell = findRandomEmptyCell();
+            if (emptyCell != -1) {
+                switch (emptyCell) {
+                    case 1 -> setCell1(COMPUTER);
+                    case 2 -> setCell2(COMPUTER);
+                    case 3 -> setCell3(COMPUTER);
+                    case 4 -> setCell4(COMPUTER);
+                    case 5 -> setCell5(COMPUTER);
+                    case 6 -> setCell6(COMPUTER);
+                    case 7 -> setCell7(COMPUTER);
+                    case 8 -> setCell8(COMPUTER);
+                    case 9 -> setCell9(COMPUTER);
+                }
+                checkForGameOver();
+                changeCurrentPlayer(); //hitta en met
+            }
+        }
+    }
+
+    private int findRandomEmptyCell () {
+        List<Integer> emptyCells = new ArrayList<>();
+        for (int i = 1; i < 9; i++) {
+            if (cellValue(i).isEmpty()) {
+                emptyCells.add(i);
+            }
+        }
+        if (!emptyCells.isEmpty()) {
+            Random random = new Random();
+            int randomIndex = random.nextInt(emptyCells.size());
+            return emptyCells.get(randomIndex);
+        }
+        return -1;
+    }
+
+    private void changeCurrentPlayer () {
+        if (currentPlayer.equals(PLAYER))
+            currentPlayer = COMPUTER;
+        else
+            currentPlayer = PLAYER;
+    }
+
+    private void prepareNextRound () {
+        setCell1("");
+        setCell2("");
+        setCell3("");
+        setCell4("");
+        setCell5("");
+        setCell6("");
+        setCell7("");
+        setCell8("");
+        setCell9("");
+        gameOver = false;
+    }
+
+
+//För att kunna skriva tester behöver checkForGameOver vara public
+    public void checkForGameOver(){
+        //  Check for 3 in a row
+        for (var ids : possibleWins) {
+            if (!cellValue(ids[0]).isEmpty()
+                    && cellValue(ids[0]).equals(cellValue(ids[1]))
+                    && cellValue(ids[1]).equals(cellValue(ids[2]))) {
+                gameOver = true;
+                if (cellValue(ids[0]).equals(PLAYER))
+                    setPlayerScore(getPlayerScore()+1);
+                else
+                    setComputerScore(getComputerScore()+1);
+                return;
+            }
+        }
+//        Check for all 9 cells used
+        gameOver = true;
+        for (int i = 1; i < 10; i++) {
+            if (cellValue(i).isEmpty()) {
+                gameOver = false;
+                break;
+            }
+        }
+    }
+    private String cellValue (int id) {
+        return switch (id) {
+            case 1 -> getCell1();
+            case 2 -> getCell2();
+            case 3 -> getCell3();
+            case 4 -> getCell4();
+            case 5 -> getCell5();
+            case 6 -> getCell6();
+            case 7 -> getCell7();
+            case 8 -> getCell8();
+            case 9 -> getCell9();
+            default -> "";
+        };
+    }
+
 
     public int getPlayerScore () {
         return playerScore.get();
@@ -43,146 +188,6 @@ public class Model {
         this.computerScore.set(computerScore);
     }
 
-    public boolean isGameOver () {
-        return gameOver;
-    }
-
-    public void setGameOver (boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
-    public String getCurrentPlayer () {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer (String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-
-    boolean gameOver = false;
-
-    String currentPlayer = "X";
-    static final String PLAYER = "X";
-    static final String COMPUTER = "O";
-
-
-    static final int[][] possibleWins = {
-            {1,2,3},
-            {4,5,6},
-            {7,8,9},
-            {1,4,7}, //Kolumner
-            {2,5,8}, //Kolumner
-            {3,6,9}, //Kolumner
-            {1,5,9}, //Diagonal 1
-            {3,5,7} //Diagonal 2
-    };
-
-    public void cellClicked (int id) {
-        if (gameOver)
-            return;
-            prepareNextRound();
-
-        if (!cellValue(id).isEmpty())
-            return;
-
-        switch (id) {
-            case 1 -> setCell1(currentPlayer);
-            case 2 -> setCell2(currentPlayer);
-            case 3 -> setCell3(currentPlayer);
-            case 4 -> setCell4(currentPlayer);
-            case 5 -> setCell5(currentPlayer);
-            case 6 -> setCell6(currentPlayer);
-            case 7 -> setCell7(currentPlayer);
-            case 8 -> setCell8(currentPlayer);
-            case 9 -> setCell9(currentPlayer);
-        }
-        changeCurrentPlayer();
-
-
-        checkForGameOver();
-        whatDoesThisOneDo();
-
-
-    }
-//KL 01:09 Paus
-    private void changeCurrentPlayer () {
-        if (currentPlayer.equals(PLAYER))
-            currentPlayer = COMPUTER;
-        else
-            currentPlayer = PLAYER;
-    }
-
-    private void prepareNextRound () {
-        setCell1("");
-        setCell2("");
-        setCell3("");
-        setCell4("");
-        setCell5("");
-        setCell6("");
-        setCell7("");
-        setCell8("");
-        setCell9("");
-        gameOver = false;
-    }
-
-    private void whatDoesThisOneDo (){
-        changeCurrentPlayer();
-    }
-
-    private String cellValue (int id) {
-        return switch (id) {
-            case 1 -> getCell1();
-            case 2 -> getCell2();
-            case 3 -> getCell3();
-            case 4 -> getCell4();
-            case 5 -> getCell5();
-            case 6 -> getCell6();
-            case 7 -> getCell7();
-            case 8 -> getCell8();
-            case 9 -> getCell9();
-            default -> "";
-        };
-    }
-//För att kunna skriva tester behöver checkForGameOver vara public
-    public void checkForGameOver(){
-        gameOver = true;
-        for (int i = 1; i < 10; i++) {
-            if (cellValue(i).isEmpty()) {
-                gameOver = false;
-                break;
-            }
-        }
-
-        //  Check for 3 in a row
-        for (var ids : possibleWins) {
-            if (!cellValue(ids[0]).isEmpty()
-                    && cellValue(ids[0]).equals(cellValue(ids[1]))
-                    && cellValue(ids[1]).equals(cellValue(ids[2]))) {
-                gameOver = true;
-                return;
-            }
-        }
-    }
-
-
-
-
-
-
-
-    //ToDo: CheckForGameOver
-    //ToDo: changeCurren
-    //ToDo: Make computer move if not game over
-
-
-
-
-
-
-
-
-
     public String getCell1 () {
         return cell1.get();
     }
@@ -192,7 +197,7 @@ public class Model {
     }
 
     public void setCell1 (String cell1) {
-
+        this.cell1.set(cell1);
     }
 
     public String getCell2 () {

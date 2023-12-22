@@ -19,7 +19,6 @@ public class TicTacToeController {
     public Label playerScore;
     public Label computerScore;
 
-
     private Model model = new Model();
 
     public void initialize()
@@ -33,7 +32,6 @@ public class TicTacToeController {
         label7.textProperty().bind(model.cell7Property());
         label8.textProperty().bind(model.cell8Property());
         label9.textProperty().bind(model.cell9Property());
-
 
         playerScore.textProperty().bind(Bindings.createStringBinding(()-> Integer.toString(model.getPlayerScore()),model.playerScoreProperty()));
         computerScore.textProperty().bind(Bindings.createStringBinding(()-> Integer.toString(model.getComputerScore()),model.computerScoreProperty()));
