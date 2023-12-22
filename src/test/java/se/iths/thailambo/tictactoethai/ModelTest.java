@@ -2,7 +2,6 @@ package se.iths.thailambo.tictactoethai;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ModelTest {
@@ -42,7 +41,7 @@ class ModelTest {
         model.setCell7("O");
         model.setCell8("X");
         model.setCell9("O");
-        assertTrue(!model.gameOver, "Nobody wins, Game over");
+        assertFalse(model.gameOver , "Nobody wins, Game over");
         assertFalse(model.getPlayerScore() > 0, "Player: X should not win");
         assertFalse(model.getComputerScore() > 0, "Computer: O should not win");
     }

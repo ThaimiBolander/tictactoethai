@@ -1,7 +1,6 @@
 package se.iths.thailambo.tictactoethai;
 
 import javafx.beans.property.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +20,6 @@ public class Model {
     IntegerProperty computerScore = new SimpleIntegerProperty(0);
 
     boolean gameOver = false;
-
     String currentPlayer = "X";
     static final String PLAYER = "X";
     static final String COMPUTER = "O";
@@ -31,10 +29,10 @@ public class Model {
             {4,5,6},
             {7,8,9},
             {1,4,7}, //Kolumner
-            {2,5,8}, //Kolumner
-            {3,6,9}, //Kolumner
+            {2,5,8},
+            {3,6,9},
             {1,5,9}, //Diagonal 1
-            {3,5,7} //Diagonal 2
+            {3,5,7}  //Diagonal 2
     };
 
     public void cellClicked (int id) {
@@ -55,17 +53,11 @@ public class Model {
             case 8 -> setCell8(currentPlayer);
             case 9 -> setCell9(currentPlayer);
         }
-
         checkForGameOver();
         if (!gameOver) {
             changeCurrentPlayer();
             makeComputerMove();
         }
-
-//   Todo: Make computer move if not game over
-//   Todo: checkForGameOver();
-//   Todo: changeCurrentPlayer();
-
     }
     public void makeComputerMove() {
         if (!gameOver) {
@@ -83,7 +75,7 @@ public class Model {
                     case 9 -> setCell9(COMPUTER);
                 }
                 checkForGameOver();
-                changeCurrentPlayer(); //hitta en met
+                changeCurrentPlayer();
             }
         }
     }
@@ -109,7 +101,6 @@ public class Model {
         else
             currentPlayer = PLAYER;
     }
-
     private void prepareNextRound () {
         setCell1("");
         setCell2("");
@@ -123,10 +114,8 @@ public class Model {
         gameOver = false;
     }
 
-
-//För att kunna skriva tester behöver checkForGameOver vara public
     public void checkForGameOver(){
-        //  Check for 3 in a row
+        //Check for 3 in a row
         for (var ids : possibleWins) {
             if (!cellValue(ids[0]).isEmpty()
                     && cellValue(ids[0]).equals(cellValue(ids[1]))
@@ -139,7 +128,7 @@ public class Model {
                 return;
             }
         }
-//        Check for all 9 cells used
+        //Check for all 9 cells used
         gameOver = true;
         for (int i = 1; i < 10; i++) {
             if (cellValue(i).isEmpty()) {
@@ -163,140 +152,103 @@ public class Model {
         };
     }
 
-
     public int getPlayerScore () {
         return playerScore.get();
     }
-
     public IntegerProperty playerScoreProperty () {
         return playerScore;
     }
-
     public void setPlayerScore (int playerScore) {
         this.playerScore.set(playerScore);
     }
-
     public int getComputerScore () {
         return computerScore.get();
     }
-
     public IntegerProperty computerScoreProperty () {
         return computerScore;
     }
-
     public void setComputerScore (int computerScore) {
         this.computerScore.set(computerScore);
     }
-
     public String getCell1 () {
         return cell1.get();
     }
-
     public StringProperty cell1Property () {
         return cell1;
     }
-
     public void setCell1 (String cell1) {
         this.cell1.set(cell1);
     }
-
     public String getCell2 () {
         return cell2.get();
     }
-
     public StringProperty cell2Property () {
         return cell2;
     }
-
     public void setCell2 (String cell2) {
         this.cell2.set(cell2);
     }
-
     public String getCell3 () {
         return cell3.get();
     }
-
     public StringProperty cell3Property () {
         return cell3;
     }
-
     public void setCell3 (String cell3) {
         this.cell3.set(cell3);
     }
-
     public String getCell4 () {
         return cell4.get();
     }
-
     public StringProperty cell4Property () {
         return cell4;
     }
-
     public void setCell4 (String cell4) {
         this.cell4.set(cell4);
     }
-
     public String getCell5 () {
         return cell5.get();
     }
-
     public StringProperty cell5Property () {
         return cell5;
     }
-
     public void setCell5 (String cell5) {
         this.cell5.set(cell5);
     }
-
     public String getCell6 () {
         return cell6.get();
     }
-
     public StringProperty cell6Property () {
         return cell6;
     }
-
     public void setCell6 (String cell6) {
         this.cell6.set(cell6);
     }
-
     public String getCell7 () {
         return cell7.get();
     }
-
     public StringProperty cell7Property () {
         return cell7;
     }
-
     public void setCell7 (String cell7) {
         this.cell7.set(cell7);
     }
-
     public String getCell8 () {
         return cell8.get();
     }
-
     public StringProperty cell8Property () {
         return cell8;
     }
-
     public void setCell8 (String cell8) {
         this.cell8.set(cell8);
     }
-
     public String getCell9 () {
         return cell9.get();
     }
-
     public StringProperty cell9Property () {
         return cell9;
     }
-
     public void setCell9 (String cell9) {
         this.cell9.set(cell9);
     }
 }
-
-
-
-

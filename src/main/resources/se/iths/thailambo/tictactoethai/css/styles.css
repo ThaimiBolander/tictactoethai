@@ -12,10 +12,15 @@
     -fx-content-display: center;
     -fx-max-width: 100;
     -fx-max-height: 100;
-    -fx-background-color: fff5e1;
-    -fx-border-color: black; /* svart färg */
-    -fx-border-width: 2px; /* 2 pixlar tjock ram */
-    -fx-border-style: solid; /* solid stil på ramen */
+    -fx-background-color: #E6E6FA;
+    -fx-border-color: purple;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
     -fx-opacity: 1;
-
+}
+#playerLabel, #computerLabel {
+    -fx-font-size: 18px;
+    -fx-font-family: "Toledo Light", sans-serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
 }
